@@ -13,9 +13,9 @@ router.get('/clothes', async (req, res, next) => {
 router.post('/clothes', async (req, res, next) => {
     try {
         const newClothes = await clothesModel.create(req.body);
-        res.status(200).send(newClothes);
+        res.status(201).send(newClothes);
     } catch (e) {
-        next(3)
+        next(e)
     }
 });
 
