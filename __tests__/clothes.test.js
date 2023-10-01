@@ -39,5 +39,21 @@ describe('clothes REST API', () => {
         expect(response.body[0].color).toEqual('TestColor');
         expect(response.body[0].size).toEqual('small');
         expect(response.body[0].id).toBeTruthy();
-    })
+    });
+
+    test('gets a clothes item by id', async () => {
+        let response = await request.post('/clothes').send({
+            name: 'TestClothesForGetItem',
+            color: 'TestForGetItemColor',
+            size: 'medium'
+        });
+
+        clothesId = response.body.id;
+
+        response = await request.get(`/clothes/${clothesId}`);
+        expect(response.status).toEqual(200);
+        expect(response.body.name).toEqual('TestClothesForGetItem');
+        expect(response.body.color).toEqual('TestForGetItemColor');
+        expect(response.body.size).toEqual('medium');
+    });
 });
