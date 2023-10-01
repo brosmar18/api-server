@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const { clothesModel } = require('../models');
+const { clothesModel, foodModel } = require('../models');
 
 const router = express.Router();
 
@@ -16,6 +16,19 @@ router.post('/clothes', async (req, res, next) => {
         res.status(200).send(newClothes);
     } catch (e) {
         next(3)
+    }
+});
+
+router.get('/clothes/:id', async (req, res, next) => {
+    try {
+        const clothes = await clothesModel.findByPk(req.params.id);
+        if (clothes) {
+            res.status(200).send(clothes);
+        } else {
+            next();
+        }
+    } catch (e) {
+        next(e);
     }
 });
 

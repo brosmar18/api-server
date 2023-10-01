@@ -19,4 +19,17 @@ router.post('/food', async (req, res, next) => {
     }
 });
 
+router.get('/food/:id', async (req, res, next) => {
+    try {
+        const food = await foodModel.findByPk(req.params.id);
+        if (food) {
+            res.status(200).send(food);
+        } else {
+            next();
+        }
+    } catch (e) {
+        next(e);
+    }
+});
+
 module.exports = router;
