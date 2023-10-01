@@ -14,6 +14,9 @@ afterAll(async () => {
 });
 
 describe('food REST API', () => {
+
+    let foodId;
+
     test('creates  a food item', async () => {
         let response = await request.post('/food').send({
             name: 'TestFood',
@@ -26,5 +29,42 @@ describe('food REST API', () => {
         expect(response.body.price).toEqual(5.99);
         expect(response.body.calories).toEqual(350);
         expect(response.body.id).toBeTruthy();
+    });
+
+    test('gets foods', async () => {
+        let response = await request.get('/food');
+
+        expect(response.status).toEqual(200);
+        expect(response.body[0].name).toEqual('TestFood');
+        expect(response.body[0].price).toEqual(5.99);
+        expect(response.body[0].calories).toEqual(350);
+        expect(response.body[0].id).toBeTruthy();
+    });
+
+    test('gets a food item by id', async () => {
+        let response = await request.post('/food').send({
+            name: 'TestFoodForGetItem',
+            price: 8.99,
+            calories: 250
+        });
+
+        foodId = response.body.id;
+
+        response = await request.get(`/food/${foodId}`);
+        expect(response.status).toEqual(200);
+        expect(response.body.name).toEqual('TestFoodForGetItem');
+        expect(response.body.price).toEqual(8.99);
+        expect(response.body.calories).toEqual(250);
+    });
+    test('updates a food item', async () => {
+        let response = await request.put(`/food/${foodId}`).send({
+            name: 'UpdatedTestFood',
+            price: 7.99,
+            calories: 675
+        });
+        expect(response.status).toEqual(200);
+        expect(response.body.name).toEqual('UpdatedTestFood');
+        expect(response.body.price).toEqual(7.99);
+        expect(response.body.calories).toEqual(675);
     });
 });
