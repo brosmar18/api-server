@@ -67,4 +67,15 @@ describe('food REST API', () => {
         expect(response.body.price).toEqual(7.99);
         expect(response.body.calories).toEqual(675);
     });
+
+    test('deletes a food item', async () => {
+        let response = await request.delete(`/food/${foodId}`);
+
+        expect(response.status).toEqual(200);
+        expect(response.body).toMatchObject({});
+
+        // try to get a deleted food item, expecting a 404 response
+        response = await request.get(`/food/${foodId}`);
+        expect(response.status).toEqual(404);
+    });
 });
