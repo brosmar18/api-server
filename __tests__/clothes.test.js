@@ -30,4 +30,14 @@ describe('clothes REST API', () => {
         expect(response.body.size).toEqual('small');
         expect(response.body.id).toBeTruthy();
     });
+
+    test('gets clothes', async () => {
+        let response = await request.get('/clothes');
+
+        expect(response.status).toEqual(201);
+        expect(response.body[0].name).toEqual('TestClothes');
+        expect(response.body[0].color).toEqual('TestColor');
+        expect(response.body[0].size).toEqual('small');
+        expect(response.body[0].id).toBeTruthy();
+    })
 });
