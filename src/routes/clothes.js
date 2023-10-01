@@ -51,7 +51,7 @@ router.delete('/clothes/:id', async (req, res, next) => {
         const clothes = await clothesModel.findByPk(req.params.id);
         if (clothes) {
             await clothes.destroy();
-            res.status(200).send(null);
+            res.status(201).send(null);
         } else {
             next();
         }

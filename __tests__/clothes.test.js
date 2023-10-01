@@ -69,4 +69,16 @@ describe('clothes REST API', () => {
         expect(response.body.color).toEqual('UpdatedTestColor');
         expect(response.body.size).toEqual('large');
     });
+
+    test('deletes a clothes item', async () => {
+        let response = await request.delete(`/clothes/${clothesId}`);
+
+        expect(response.status).toEqual(201);
+        expect(response.body).toMatchObject({});
+
+
+        // try to get a deleted clothes item, expecting a 404 response
+        response = await request.get(`/clothes/${clothesId}`);
+        expect(response.status).toEqual(404);
+    });
 });
