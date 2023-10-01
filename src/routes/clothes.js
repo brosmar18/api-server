@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/clothes', async (req, res, next) => {
     const clothes = await clothesModel.findAll();
-    res.status(200).send(clothes);
+    res.status(201).send(clothes);
 });
 
 router.post('/clothes', async (req, res, next) => {
