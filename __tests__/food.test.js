@@ -24,7 +24,7 @@ describe('food REST API', () => {
             calories: 350
         });
 
-        expect(response.status).toEqual(200);
+        expect(response.status).toEqual(201);
         expect(response.body.name).toEqual('TestFood');
         expect(response.body.price).toEqual(5.99);
         expect(response.body.calories).toEqual(350);
@@ -71,7 +71,7 @@ describe('food REST API', () => {
     test('deletes a food item', async () => {
         let response = await request.delete(`/food/${foodId}`);
 
-        expect(response.status).toEqual(200);
+        expect(response.status).toEqual(204);
         expect(response.body).toMatchObject({});
 
         // try to get a deleted food item, expecting a 404 response

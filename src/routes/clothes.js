@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/clothes', async (req, res, next) => {
     const clothes = await clothesModel.findAll();
-    res.status(201).send(clothes);
+    res.status(200).send(clothes);
 });
 
 router.post('/clothes', async (req, res, next) => {
@@ -51,7 +51,7 @@ router.delete('/clothes/:id', async (req, res, next) => {
         const clothes = await clothesModel.findByPk(req.params.id);
         if (clothes) {
             await clothes.destroy();
-            res.status(201).send(null);
+            res.status(204).send(null);
         } else {
             next();
         }

@@ -34,7 +34,7 @@ describe('clothes REST API', () => {
     test('gets clothes', async () => {
         let response = await request.get('/clothes');
 
-        expect(response.status).toEqual(201);
+        expect(response.status).toEqual(200);
         expect(response.body[0].name).toEqual('TestClothes');
         expect(response.body[0].color).toEqual('TestColor');
         expect(response.body[0].size).toEqual('small');
@@ -73,7 +73,7 @@ describe('clothes REST API', () => {
     test('deletes a clothes item', async () => {
         let response = await request.delete(`/clothes/${clothesId}`);
 
-        expect(response.status).toEqual(201);
+        expect(response.status).toEqual(204);
         expect(response.body).toMatchObject({});
 
 
