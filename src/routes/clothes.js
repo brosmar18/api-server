@@ -32,4 +32,32 @@ router.get('/clothes/:id', async (req, res, next) => {
     }
 });
 
+router.put('/clothes/:id', async (req, res, next) => {
+    try {
+        const clothes = await clothesModel.findByPk(req.params.id);
+        if (clothes) {
+            const updatedClothes = await clothes.update(req.body);
+            res.status(200).send(updatedClothes);
+        } else {
+            next();
+        }
+    } catch (e) {
+        next(e);
+    }
+});
+
+router.delete('/clothes/:id', async (req, res, next) => {
+    try {
+        const clothes = await clothesModel.findByPk(req.params.id);
+        if (clothes) {
+            await clothes.destroy();
+            res.status(200).send(null);
+        } else {
+            next();
+        }
+    } catch (e) {
+        next(e);
+    }
+});
+
 module.exports = router;

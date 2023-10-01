@@ -32,4 +32,32 @@ router.get('/food/:id', async (req, res, next) => {
     }
 });
 
+router.put('/food/:id', async (req, res, next) => {
+    try {
+        const food = await foodModel.findByPk(req.params.id);
+        if (food) {
+            const updatedFood = await food.update(req.body);
+            res.status(200).send(updatedFood);
+        } else {
+            next();
+        }
+    } catch (e) {
+        next(e);
+    }
+});
+
+router.delete('/food/:id', async (req, res, next) => {
+    try {
+        const food = await foodModel.findByPk(req.params.id);
+        if (food) {
+            await food.destroy();
+            res.status(200).send(null); 
+        } else {
+            next();
+        }
+    } catch (e) {
+        next(e);
+    }
+});
+
 module.exports = router;
