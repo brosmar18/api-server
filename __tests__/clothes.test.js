@@ -56,4 +56,17 @@ describe('clothes REST API', () => {
         expect(response.body.color).toEqual('TestForGetItemColor');
         expect(response.body.size).toEqual('medium');
     });
+
+    test('updates a clothes item', async () => {
+        let response = await request.put(`/clothes/${clothesId}`).send({
+            name: 'UpdatedTestClothes',
+            color: 'UpdatedTestColor',
+            size: 'large'
+        });
+
+        expect(response.status).toEqual(200);
+        expect(response.body.name).toEqual('UpdatedTestClothes');
+        expect(response.body.color).toEqual('UpdatedTestColor');
+        expect(response.body.size).toEqual('large');
+    });
 });
