@@ -1,32 +1,26 @@
 'use strict';
 
 const express = require('express');
-const { foodModel } = require('../models');
+const { foodCollection } = require('../models');
 
 const router = express.Router();
 
 router.get('/food', async (req, res, next) => {
-    const food = await foodModel.findAll();
+    const food = await foodCollection.read();
     res.status(200).send(food);
 });
 
-router.post('/food', async (req, res, next) => {
-    try {
-        const newFood = await foodModel.create(req.body);
-        res.status(201).send(newFood);
-    } catch (e) {
-        next(e);
-    }
-});
 
 router.get('/food/:id', async (req, res, next) => {
+    const singleFoodItem = await foodCollection.read(req.params.id);
+    res.status(200).send(singleFoodItem);
+});
+
+router.post('/food', async (req, res ,next) => {
     try {
-        const food = await foodModel.findByPk(req.params.id);
-        if (food) {
-            res.status(200).send(food);
-        } else {
-            next();
-        }
+        console.log('This is the body', req.body);
+        const newFood = await foodCollection.create(req.body);
+        res.status(200).send(newFood);
     } catch (e) {
         next(e);
     }
@@ -34,12 +28,11 @@ router.get('/food/:id', async (req, res, next) => {
 
 router.put('/food/:id', async (req, res, next) => {
     try {
-        const food = await foodModel.findByPk(req.params.id);
-        if (food) {
-            const updatedFood = await food.update(req.body);
+        const updatedFood = await foodCollection.update(req.params.id, req.body);
+        if (updatedFood) {
             res.status(200).send(updatedFood);
         } else {
-            next();
+            res.status(404).send({ message: "Food not found"});
         }
     } catch (e) {
         next(e);
@@ -48,12 +41,11 @@ router.put('/food/:id', async (req, res, next) => {
 
 router.delete('/food/:id', async (req, res, next) => {
     try {
-        const food = await foodModel.findByPk(req.params.id);
-        if (food) {
-            await food.destroy();
-            res.status(204).send(null); 
+        const result = await foodCollection.delete(req.params.id);
+        if (result.message === 'Record deleted successfully') {
+            res.status(200).send(result);
         } else {
-            next();
+            res.status(404).send({ message: "Food not found or not deleted" });
         }
     } catch (e) {
         next(e);
