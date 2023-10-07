@@ -15,13 +15,21 @@ router.get('/author', async (req, res, next) => {
 // Route to get a specific author by ID
 router.get('/author/:id', async (req, res, next) => {
     const author = await authorCollection.read(req.params.id);
-    res.status(200).send(author);
+    if (author) {
+        res.status(200).send(author);
+    } else {
+        res.status(404).send({ message: 'Author not found' });
+    }
 });
 
 // Route to create a new author
 router.post('/author', async (req, res, next) => {
-    const newAuthor = await authorCollection.create(req.body);
-    res.status(200).send(newAuthor);
+    try {
+        const newAuthor = await authorCollection.create(req.body);
+        res.status(200).send(newAuthor);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
 });
 
 // Route to update an existing author by ID

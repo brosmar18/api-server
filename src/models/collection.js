@@ -10,8 +10,7 @@ class Collection {
             const record = await this.model.create(json);
             return record;
         } catch (e) {
-            console.error('error in the collection interface');
-            return e;
+            console.error('error in the collection interface', e);
         }
     }
 

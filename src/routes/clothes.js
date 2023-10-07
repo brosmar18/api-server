@@ -13,8 +13,16 @@ router.get('/clothes', async (req, res, next) => {
 
 // Route to get a specific clothes item by ID
 router.get('/clothes/:id', async (req, res, next) => {
-    const singleClothesItem = await clothesCollection.read(req.params.id);
-    res.status(200).send(singleClothesItem);
+    try {
+        const singleClothesItem = await clothesCollection.read(req.params.id);
+        if (singleClothesItem) {
+            res.status(200).send(singleClothesItem);
+        } else {
+            res.status(404).send({ message: "Clothes not found" });
+        }
+    } catch (e) {
+        next(e);
+    }
 });
 
 // Route to create a new clothes item
@@ -22,7 +30,7 @@ router.post('/clothes', async (req, res, next) => {
     try {
         console.log('This is the body', req.body);
         const newClothes = await clothesCollection.create(req.body);
-        res.status(200).send(newClothes);
+        res.status(201).send(newClothes);
     } catch (e) {
         next(e);
     }
@@ -48,7 +56,7 @@ router.delete('/clothes/:id', async (req, res, next) => {
     try {
         const result = await clothesCollection.delete(req.params.id);
         if (result.message === 'Record deleted successfully') {
-            res.status(200).send(result);
+            res.status(204).send(result);
         } else {
             res.status(404).send({ message: "Customer not found or not deleted" });
         }
