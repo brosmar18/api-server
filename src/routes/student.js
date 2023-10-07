@@ -5,11 +5,13 @@ const { studentCollection, courseCollection, studentDetailsCollection } = requir
 
 const router = express.Router();
 
+// Route to get all students
 router.get('/student', async (req, res, next) => {
     const student = await studentCollection.read();
     res.status(200).send(student);
 });
 
+// Route to get a specific student by ID and include their details
 router.get('/student/:id', async (req, res, next) => {
     try {
         const student = await studentCollection.read(req.params.id);
@@ -24,10 +26,9 @@ router.get('/student/:id', async (req, res, next) => {
     }
 });
 
-
+// Route to create a new student
 router.post('/student', async (req, res, next) => {
     try {
-        console.log('This is the body, req.body');
         const newStudent = await studentCollection.create(req.body);
         res.status(200).send(newStudent);
     } catch (e) {
@@ -35,10 +36,10 @@ router.post('/student', async (req, res, next) => {
     }
 });
 
+// Route to update a specific student by ID
 router.put('/student/:id', async (req, res, next) => {
     try {
         const updatedStudent = await studentCollection.update(req.params.id, req.body);
-
         if (updatedStudent) {
             res.status(200).send(updatedStudent);
         } else {
@@ -49,6 +50,7 @@ router.put('/student/:id', async (req, res, next) => {
     }
 });
 
+// Route to delete a specific student by ID
 router.delete('/student/:id', async (req, res, next)=> {
     try {
         const result = await studentCollection.delete(req.params.id);
@@ -62,7 +64,7 @@ router.delete('/student/:id', async (req, res, next)=> {
     }
 });
 
-
+// Route to enroll a student in a specific course
 router.post('/student/:studentId/enroll/:courseId', async (req, res, next) => {
     try {
         const student = await studentCollection.read(req.params.studentId);
@@ -78,6 +80,7 @@ router.post('/student/:studentId/enroll/:courseId', async (req, res, next) => {
     }
 });
 
+// Route to get all courses a specific student is enrolled in
 router.get('/student/:studentId/courses', async (req, res, next) => {
     try {
         const student = await studentCollection.read(req.params.studentId);
@@ -92,6 +95,7 @@ router.get('/student/:studentId/courses', async (req, res, next) => {
     }
 });
 
+// Route to get details of a specific student by ID
 router.get('/student/:id/details', async (req, res, next) => {
     try {
         const student = await studentCollection.read(req.params.id);
@@ -106,6 +110,7 @@ router.get('/student/:id/details', async (req, res, next) => {
     }
 });
 
+// Route to create or update details for a specific student by ID
 router.post('/student/:id/details', async (req, res, next) => {
     try {
         const student = await studentCollection.read(req.params.id);

@@ -19,7 +19,7 @@ class Collection {
         try {
             let record = null;
             if (id) {
-                options.where = { id: id };
+                options.where = { ...options.where, id: id }; // Merge the provided where clause with the id
                 record = await this.model.findOne(options);
             } else {
                 record = await this.model.findAll(options);

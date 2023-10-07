@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (sequelizeDatabase, DataTypes) => {
-    return sequelizeDatabase.define('studentDetail', {
+    const studentDetail = sequelizeDatabase.define('studentDetail', {
         address: {
             type: DataTypes.STRING,
             allowNull: true,
@@ -15,4 +15,13 @@ module.exports = (sequelizeDatabase, DataTypes) => {
             allowNull: true,
         },
     });
+
+    studentDetail.associate = (models) => {
+        studentDetail.belongsTo(models.student, {
+            foreignKey: 'studentId',
+            as: 'student'
+        });
+    };
+
+    return studentDetail;
 };

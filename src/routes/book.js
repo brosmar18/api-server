@@ -5,12 +5,13 @@ const { bookCollection, authorCollection } = require('../models');
 
 const router = express.Router();
 
-// CRUD routes for Book
+
 router.get('/book', async (req, res, next) => {
     const books = await bookCollection.read();
     res.status(200).send(books);
 });
 
+// show author info
 router.get('/book/:id', async (req, res, next) => {
     try {
         const book = await bookCollection.read(req.params.id, {
