@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const { studentCollection, courseCollection } = require('../models');
+const { studentCollection, courseCollection, studentDetailsCollection } = require('../models');
 
 const router = express.Router();
 
@@ -11,9 +11,19 @@ router.get('/student', async (req, res, next) => {
 });
 
 router.get('/student/:id', async (req, res, next) => {
-    const singleStudentRecord = await studentCollection.read(req.params.id);
-    res.status(200).send(singleStudentRecord);
+    try {
+        const student = await studentCollection.read(req.params.id);
+        if (student) {
+            const details = await student.getStudentDetail();
+            res.status(200).send({ ...student.toJSON(), details });
+        } else {
+            res.status(404).send({ message: 'Student not found' });
+        }
+    } catch (e) {
+        next(e);
+    }
 });
+
 
 router.post('/student', async (req, res, next) => {
     try {
@@ -74,6 +84,35 @@ router.get('/student/:studentId/courses', async (req, res, next) => {
         if (student) {
             const courses = await student.getCourses();
             res.status(200).send(courses);
+        } else {
+            res.status(404).send({ message: 'Student not found' });
+        }
+    } catch (e) {
+        next(e);
+    }
+});
+
+router.get('/student/:id/details', async (req, res, next) => {
+    try {
+        const student = await studentCollection.read(req.params.id);
+        if (student) {
+            const details = await student.getStudentDetail();
+            res.status(200).send(details);
+        } else {
+            res.status(404).send({ message: 'Student not found' });
+        }
+    } catch (e) {
+        next(e);
+    }
+});
+
+router.post('/student/:id/details', async (req, res, next) => {
+    try {
+        const student = await studentCollection.read(req.params.id);
+        if (student) {
+            const details = await studentDetailsCollection.create(req.body);
+            await student.setStudentDetail(details);
+            res.status(200).send(details);
         } else {
             res.status(404).send({ message: 'Student not found' });
         }

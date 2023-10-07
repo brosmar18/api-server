@@ -7,6 +7,7 @@ const clothes = require('./clothes');
 const customer= require('./customer');
 const student = require('./student');
 const course = require('./course');
+const studentDetails = require('./studentDetails');
 const Collection = require('./collection');
 
 
@@ -19,10 +20,15 @@ const clothesModel = clothes(sequelizeDatabase, DataTypes);
 const customerModel = customer(sequelizeDatabase, DataTypes);
 const studentModel = student(sequelizeDatabase, DataTypes);
 const courseModel = course(sequelizeDatabase, DataTypes);
+const studentDetailsModel = studentDetails(sequelizeDatabase, DataTypes);
 
 // Define the many-to-many association
 studentModel.belongsToMany(courseModel, { through: 'StudentCourses' });
 courseModel.belongsToMany(studentModel, { through: 'StudentCourses' });
+
+// Define the one-to-one association
+studentModel.hasOne(studentDetailsModel, { onDelete: 'CASCADE' });
+studentDetailsModel.belongsTo(studentModel);
 
 
 module.exports = {
@@ -32,4 +38,5 @@ module.exports = {
     clothesCollection: new Collection(clothesModel),
     studentCollection: new Collection(studentModel),
     courseCollection: new Collection(courseModel),
+    studentDetailsCollection: new Collection(studentDetailsModel),
 };
