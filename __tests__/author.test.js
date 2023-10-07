@@ -68,7 +68,7 @@ describe('Author REST API', () => {
         const response = await request.delete(`/author/${authorId}`);
         expect(response.status).toEqual(200);
         expect(response.body).toMatchObject({});
-        
+
         // Confirm the deletion by trying to fetch the deleted author
         const getResponse = await request.get(`/author/${authorId}`);
         expect(getResponse.status).not.toEqual(200);

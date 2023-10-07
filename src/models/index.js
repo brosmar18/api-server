@@ -13,9 +13,15 @@ const book = require('./book');
 const Collection = require('./collection');
 
 
-const DATABASE_URL = process.env.NODE_ENV === 'test' ? 'sqlite:memory' : process.env.DATABASE_URL;
+// const DATABASE_URL = process.env.NODE_ENV === 'test' ? 'sqlite::memory' : process.env.DATABASE_URL;
 
-const sequelizeDatabase = new Sequelize(DATABASE_URL);
+const DATABASE_URL = process.env.NODE_ENV === 'test' ? 'sqlite:memory' : process.env.DATABASE_URL;
+const sequelizeDatabase = new Sequelize(DATABASE_URL, {
+  logging: process.env.NODE_ENV !== 'test' ? console.log : false
+});
+
+
+// const sequelizeDatabase = new Sequelize(DATABASE_URL);
 
 const foodModel = food(sequelizeDatabase, DataTypes);
 const clothesModel = clothes(sequelizeDatabase, DataTypes);

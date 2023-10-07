@@ -7,14 +7,26 @@ const router = express.Router();
 
 // Route to get all courses
 router.get('/course', async (req, res, next) => {
-    const course = await courseCollection.read();
-    res.status(200).send(course);
+    try {
+        const courses = await courseCollection.read();
+        res.status(200).send(courses);
+    } catch (e) {
+        next(e);
+    }
 });
 
 // Route to get a specific course by ID
 router.get('/course/:id', async (req, res, next) => {
-    const singleCourseRecord = await courseCollection.read(req.params.id);
-    res.status(200).send(singleCourseRecord);
+    try {
+        const singleCourseRecord = await courseCollection.read(req.params.id);
+        if (singleCourseRecord) {
+            res.status(200).send(singleCourseRecord);
+        } else {
+            res.status(404).send({ message: 'Course not found' });
+        }
+    } catch (e) {
+        next(e);
+    }
 });
 
 // Route to get all students enrolled in a specific course
@@ -32,12 +44,15 @@ router.get('/course/:courseId/students', async (req, res, next) => {
     }
 });
 
-
 // Route to create a new course
 router.post('/course', async (req, res, next) => {
     try {
         const newCourse = await courseCollection.create(req.body);
-        res.status(200).send(newCourse);
+        if (newCourse) {
+            res.status(201).send(newCourse);
+        } else {
+            res.status(400).send({ message: 'Bad Request' });
+        }
     } catch (e) {
         next(e);
     }
@@ -50,7 +65,7 @@ router.put('/course/:id', async (req, res, next) => {
         if (updatedCourse) {
             res.status(200).send(updatedCourse);
         } else {
-            res.status(404).send({ message: "Course not found "});
+            res.status(404).send({ message: "Course not found" });
         }
     } catch (e) {
         next(e);
@@ -58,13 +73,13 @@ router.put('/course/:id', async (req, res, next) => {
 });
 
 // Route to delete a specific course by ID
-router.delete('/course/:id', async (req, res, next)=> {
+router.delete('/course/:id', async (req, res, next) => {
     try {
         const result = await courseCollection.delete(req.params.id);
         if (result.message === 'Record deleted successfully') {
             res.status(200).send(result);
         } else {
-            res.status(404).send({ message: "Course not found or not deleted" })
+            res.status(404).send({ message: "Course not found or not deleted" });
         }
     } catch (e) {
         next(e);
