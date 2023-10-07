@@ -6,8 +6,8 @@ const { studentCollection } = require('../models');
 const router = express.Router();
 
 router.get('/student', async (req, res, next) => {
-    const author = await studentCollection.read();
-    res.status(200).send(author);
+    const student = await studentCollection.read();
+    res.status(200).send(student);
 });
 
 router.get('/student/:id', async (req, res, next) => {

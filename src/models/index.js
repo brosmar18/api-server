@@ -6,6 +6,7 @@ const food = require('./food');
 const clothes = require('./clothes');
 const customer= require('./customer');
 const student = require('./student');
+const course = require('./course');
 const Collection = require('./collection');
 
 
@@ -17,11 +18,13 @@ const foodModel = food(sequelizeDatabase, DataTypes);
 const clothesModel = clothes(sequelizeDatabase, DataTypes);
 const customerModel = customer(sequelizeDatabase, DataTypes);
 const studentModel = student(sequelizeDatabase, DataTypes);
+const courseModel = course(sequelizeDatabase, DataTypes);
 
 module.exports = {
     sequelizeDatabase,
     customerCollection: new Collection(customerModel),
     foodCollection: new Collection(foodModel),
     clothesCollection: new Collection(clothesModel),
-    studentCollection: new Collection(studentModel)
+    studentCollection: new Collection(studentModel),
+    courseCollection: new Collection(courseModel),
 };
