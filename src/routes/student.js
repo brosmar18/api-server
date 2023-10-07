@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const { studentCollection } = require('../models');
+const { studentCollection, courseCollection } = require('../models');
 
 const router = express.Router();
 
@@ -52,5 +52,34 @@ router.delete('/student/:id', async (req, res, next)=> {
     }
 });
 
+
+router.post('/student/:studentId/enroll/:courseId', async (req, res, next) => {
+    try {
+        const student = await studentCollection.read(req.params.studentId);
+        const course = await courseCollection.read(req.params.courseId);
+        if (student && course) {
+            await student.addCourse(course);
+            res.status(200).send({ message: 'Student enrolled in course successfully' });
+        } else {
+            res.status(404).send({ message: 'Student or Course not found'});
+        }
+    } catch (e) {
+        next(e);
+    }
+});
+
+router.get('/student/:studentId/courses', async (req, res, next) => {
+    try {
+        const student = await studentCollection.read(req.params.studentId);
+        if (student) {
+            const courses = await student.getCourses();
+            res.status(200).send(courses);
+        } else {
+            res.status(404).send({ message: 'Student not found' });
+        }
+    } catch (e) {
+        next(e);
+    }
+});
 
 module.exports = router;

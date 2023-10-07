@@ -20,6 +20,11 @@ const customerModel = customer(sequelizeDatabase, DataTypes);
 const studentModel = student(sequelizeDatabase, DataTypes);
 const courseModel = course(sequelizeDatabase, DataTypes);
 
+// Define the many-to-many association
+studentModel.belongsToMany(courseModel, { through: 'StudentCourses' });
+courseModel.belongsToMany(studentModel, { through: 'StudentCourses' });
+
+
 module.exports = {
     sequelizeDatabase,
     customerCollection: new Collection(customerModel),
