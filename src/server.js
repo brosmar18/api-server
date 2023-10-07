@@ -9,6 +9,8 @@ const customerRouter = require('./routes/customer');
 const studentRouter = require('./routes/student');
 const courseRouter = require('./routes/course');
 const studentDetailsRouter = require('./routes/studentDetails');
+const authorRouter = require('./routes/author');
+const bookRouter = require('./routes/book');
 
 require('dotenv').config();
 const PORT = process.env.PORT || 5000;
@@ -23,6 +25,8 @@ app.use(customerRouter);
 app.use(studentRouter);
 app.use(courseRouter);
 app.use(studentDetailsRouter);
+app.use(authorRouter);
+app.use(bookRouter);
 
 app.get('/', (req, res, next) => {
     res.status(200).send('Hello World!');

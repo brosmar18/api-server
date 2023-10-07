@@ -15,20 +15,22 @@ class Collection {
         }
     }
 
-    async read(id = null) {
+    async read(id, options = {}) {
         try {
-            if (!id) {
-                const records = await this.model.findAll();
-                return records;
+            let record = null;
+            if (id) {
+                options.where = { id: id };
+                record = await this.model.findOne(options);
             } else {
-                const singleRecord = await this.model.findByPk(id);
-                return singleRecord;
+                record = await this.model.findAll(options);
             }
+            return record;
         } catch (e) {
-            console.error('error in the collection interface');
-            return e;
+            console.error('Error with read method in Collection class:', e);
+            throw new Error(e.message);
         }
     }
+    
 
     async update(id, json) {
         try {

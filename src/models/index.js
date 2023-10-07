@@ -8,6 +8,8 @@ const customer= require('./customer');
 const student = require('./student');
 const course = require('./course');
 const studentDetails = require('./studentDetails');
+const author = require('./author');
+const book = require('./book');
 const Collection = require('./collection');
 
 
@@ -21,6 +23,8 @@ const customerModel = customer(sequelizeDatabase, DataTypes);
 const studentModel = student(sequelizeDatabase, DataTypes);
 const courseModel = course(sequelizeDatabase, DataTypes);
 const studentDetailsModel = studentDetails(sequelizeDatabase, DataTypes);
+const authorModel = author(sequelizeDatabase, DataTypes);
+const bookModel = book(sequelizeDatabase, DataTypes);
 
 // Define the many-to-many association
 studentModel.belongsToMany(courseModel, { through: 'StudentCourses' });
@@ -29,6 +33,10 @@ courseModel.belongsToMany(studentModel, { through: 'StudentCourses' });
 // Define the one-to-one association
 studentModel.hasOne(studentDetailsModel, { onDelete: 'CASCADE' });
 studentDetailsModel.belongsTo(studentModel);
+
+// Define the one-to-many association
+authorModel.hasMany(bookModel, { foreignKey: 'authorId', sourceKey: 'id' });
+bookModel.belongsTo(authorModel, { foreignKey: 'authorId', targetKey: 'id' });
 
 
 module.exports = {
@@ -39,4 +47,6 @@ module.exports = {
     studentCollection: new Collection(studentModel),
     courseCollection: new Collection(courseModel),
     studentDetailsCollection: new Collection(studentDetailsModel),
+    authorCollection: new Collection(authorModel),
+    bookCollection: new Collection(bookModel),
 };
