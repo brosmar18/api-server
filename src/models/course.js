@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (sequelizeDatabase, DataTypes) => {
-    return sequelizeDatabase.define('course', {
+    const course = sequelizeDatabase.define('course', {
         courseName: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -14,5 +14,22 @@ module.exports = (sequelizeDatabase, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        studentId: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model: 'students', // name of the table, not the model
+                key: 'id'
+            }
+        }
     });
+
+    course.associate = (models) => {
+        course.belongsTo(models.student, {
+            foreignKey: 'studentId',
+            as: 'student'
+        });
+    };
+
+    return course;
 };

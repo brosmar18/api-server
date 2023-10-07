@@ -5,17 +5,19 @@ const { clothesCollection } = require('../models');
 
 const router = express.Router();
 
+// Route to get all clothes items
 router.get('/clothes', async (req, res, next) => {
     const clothes = await clothesCollection.read();
     res.status(200).send(clothes);
 });
 
-
+// Route to get a specific clothes item by ID
 router.get('/clothes/:id', async (req, res, next) => {
     const singleClothesItem = await clothesCollection.read(req.params.id);
     res.status(200).send(singleClothesItem);
 });
 
+// Route to create a new clothes item
 router.post('/clothes', async (req, res, next) => {
     try {
         console.log('This is the body', req.body);
@@ -26,6 +28,7 @@ router.post('/clothes', async (req, res, next) => {
     }
 });
 
+// Route to update an existing clothes item by ID
 router.put('/clothes/:id', async (req, res, next) => {
     try {
         const updatedClothes = await clothesCollection.update(req.params.id, req.body);
@@ -40,6 +43,7 @@ router.put('/clothes/:id', async (req, res, next) => {
     }
 });
 
+// Route to delete a specific clothes item by ID
 router.delete('/clothes/:id', async (req, res, next) => {
     try {
         const result = await clothesCollection.delete(req.params.id);
@@ -52,6 +56,5 @@ router.delete('/clothes/:id', async (req, res, next) => {
         next(e);
     }
 });
-
 
 module.exports = router;

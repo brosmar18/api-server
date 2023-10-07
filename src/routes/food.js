@@ -5,17 +5,19 @@ const { foodCollection } = require('../models');
 
 const router = express.Router();
 
+// Route to retrieve all food items
 router.get('/food', async (req, res, next) => {
     const food = await foodCollection.read();
     res.status(200).send(food);
 });
 
-
+// Route to retrieve a specific food item by ID
 router.get('/food/:id', async (req, res, next) => {
     const singleFoodItem = await foodCollection.read(req.params.id);
     res.status(200).send(singleFoodItem);
 });
 
+// Route to create a new food item
 router.post('/food', async (req, res ,next) => {
     try {
         console.log('This is the body', req.body);
@@ -26,6 +28,7 @@ router.post('/food', async (req, res ,next) => {
     }
 });
 
+// Route to update details of an existing food item by ID
 router.put('/food/:id', async (req, res, next) => {
     try {
         const updatedFood = await foodCollection.update(req.params.id, req.body);
@@ -39,6 +42,7 @@ router.put('/food/:id', async (req, res, next) => {
     }
 });
 
+// Route to delete a specific food item by ID
 router.delete('/food/:id', async (req, res, next) => {
     try {
         const result = await foodCollection.delete(req.params.id);
