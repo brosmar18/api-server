@@ -5,7 +5,6 @@ const notFound = require('./handlers/404');
 const errorHandler = require('./handlers/500');
 const foodRouter = require('./routes/food');
 const clothesRouter = require('./routes/clothes');
-const customerRouter = require('./routes/customer');
 const studentRouter = require('./routes/student');
 const courseRouter = require('./routes/course');
 const studentDetailsRouter = require('./routes/studentDetails');
@@ -21,7 +20,6 @@ app.use(express.json());
 
 app.use(foodRouter);
 app.use(clothesRouter);
-app.use(customerRouter);
 app.use(studentRouter);
 app.use(courseRouter);
 app.use(studentDetailsRouter);
