@@ -37,8 +37,8 @@ In addition to the models, a **Collection Class** was introduced to further stre
 ### Links and Resources
 
 - [GitHub Actions ci/cd](https://github.com/brosmar18/api-server/actions) 
-- basic-api [back-end server url] (when applicable) - Not applicable because database has not been deployed. 
-- Main [back-end server url] (when applicable) Not applicable because database has not been deployed. 
+- modeling [back-end server modeling branch url](postgres://code401db_user:LRBkU8FITRZvc1HOiOtImcVNxuumYFu8@dpg-ckhfglq12bvs73doj4m0-a/code401db)
+- Main [back-end server main branch url](https://lab04-main-api-server.onrender.com)
 
 
 ### Collaborators
