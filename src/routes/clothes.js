@@ -1,59 +1,64 @@
 'use strict';
 
 const express = require('express');
-const { clothesModel, foodModel } = require('../models');
+const { clothesCollection } = require('../models');
 
 const router = express.Router();
 
+// Route to get all clothes items
 router.get('/clothes', async (req, res, next) => {
-    const clothes = await clothesModel.findAll();
+    const clothes = await clothesCollection.read();
     res.status(200).send(clothes);
 });
 
-router.post('/clothes', async (req, res, next) => {
-    try {
-        const newClothes = await clothesModel.create(req.body);
-        res.status(201).send(newClothes);
-    } catch (e) {
-        next(e)
-    }
-});
-
+// Route to get a specific clothes item by ID
 router.get('/clothes/:id', async (req, res, next) => {
     try {
-        const clothes = await clothesModel.findByPk(req.params.id);
-        if (clothes) {
-            res.status(200).send(clothes);
+        const singleClothesItem = await clothesCollection.read(req.params.id);
+        if (singleClothesItem) {
+            res.status(200).send(singleClothesItem);
         } else {
-            next();
+            res.status(404).send({ message: "Clothes not found" });
         }
     } catch (e) {
         next(e);
     }
 });
 
+// Route to create a new clothes item
+router.post('/clothes', async (req, res, next) => {
+    try {
+        console.log('This is the body', req.body);
+        const newClothes = await clothesCollection.create(req.body);
+        res.status(201).send(newClothes);
+    } catch (e) {
+        next(e);
+    }
+});
+
+// Route to update an existing clothes item by ID
 router.put('/clothes/:id', async (req, res, next) => {
     try {
-        const clothes = await clothesModel.findByPk(req.params.id);
-        if (clothes) {
-            const updatedClothes = await clothes.update(req.body);
+        const updatedClothes = await clothesCollection.update(req.params.id, req.body);
+
+        if (updatedClothes) {
             res.status(200).send(updatedClothes);
         } else {
-            next();
+            res.status(404).send({ message: "Clothes not found "});
         }
     } catch (e) {
         next(e);
     }
 });
 
+// Route to delete a specific clothes item by ID
 router.delete('/clothes/:id', async (req, res, next) => {
     try {
-        const clothes = await clothesModel.findByPk(req.params.id);
-        if (clothes) {
-            await clothes.destroy();
-            res.status(204).send(null);
+        const result = await clothesCollection.delete(req.params.id);
+        if (result.message === 'Record deleted successfully') {
+            res.status(204).send(result);
         } else {
-            next();
+            res.status(404).send({ message: "Customer not found or not deleted" });
         }
     } catch (e) {
         next(e);
